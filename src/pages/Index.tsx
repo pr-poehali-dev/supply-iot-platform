@@ -185,7 +185,7 @@ const Index = () => {
           {activeSection === 'warehouse' ? (
             <WarehouseSection />
           ) : (
-          <>
+          <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {metrics.map((metric, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
@@ -445,8 +445,9 @@ const Index = () => {
             </CardContent>
           </Card>
         </div>
-          </>
+          </div>
           )}
+        </div>
       </main>
 
       <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
