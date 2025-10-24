@@ -5,204 +5,200 @@ import Icon from '@/components/ui/icon';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import WarehouseSection from '@/components/WarehouseSection';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const Index = () => {
   const [isDark, setIsDark] = useState(false);
-  const [activeSection, setActiveSection] = useState('dashboard');
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [activeModule, setActiveModule] = useState('dashboard');
 
   const toggleTheme = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle('dark');
   };
 
-  const menuItems = [
+  const modules = [
     { id: 'dashboard', label: 'Дашборд', icon: 'LayoutDashboard' },
     { id: 'warehouse', label: 'Склад', icon: 'Warehouse' },
-    { id: 'sales', label: 'Продажи', icon: 'ShoppingCart' },
+    { id: 'sales', label: 'Продажи', icon: 'TrendingUp' },
     { id: 'shipping', label: 'Отгрузка', icon: 'PackageCheck' },
-    { id: 'logistics', label: 'Логистика', icon: 'Truck' },
-    { id: 'analytics', label: 'Аналитика', icon: 'LineChart' },
-    { id: 'blockchain', label: 'Блокчейн', icon: 'Blocks' },
-    { id: 'iot', label: 'IoT', icon: 'Radio' },
-    { id: 'settings', label: 'Настройки', icon: 'Settings' },
+    { id: 'fleet', label: 'Транспорт', icon: 'Truck' },
+    { id: 'ai', label: 'ИИ Прогнозы', icon: 'Brain' },
+    { id: 'blockchain', label: 'Блокчейн', icon: 'Shield' },
+    { id: 'iot', label: 'IoT Мониторинг', icon: 'Radio' },
   ];
 
-  const metrics = [
-    { title: 'Товаров на складе', value: '80298', trend: '+12%', icon: 'Package', color: 'text-blue-600' },
-    { title: 'Активные заказы', value: '1,453', trend: '+8%', icon: 'ShoppingBag', color: 'text-green-600' },
-    { title: 'Транспорт в пути', value: '24', trend: '-3%', icon: 'Truck', color: 'text-orange-600' },
-    { title: 'IoT устройства', value: '156', trend: '+2%', icon: 'Cpu', color: 'text-purple-600' },
-  ];
-
-  const warehouseData = [
-    { name: 'Склад А', fill: 87, capacity: '2400 м³', status: 'active' },
-    { name: 'Склад Б', fill: 62, capacity: '1800 м³', status: 'active' },
-    { name: 'Склад В', fill: 45, capacity: '3200 м³', status: 'active' },
-  ];
-
-  const recentOrders = [
+  const kpiMetrics = [
     { 
-      id: '#ORD-2847', 
-      client: 'ООО "Техносервис"', 
-      status: 'processing', 
-      amount: '₽ 847,320',
-      items: 12,
-      weight: '2400 кг',
-      delivery: '24.10.2025',
-      address: 'г. Москва, ул. Промышленная 45',
-      contact: '+7 (495) 123-45-67'
+      title: 'Товары на складе', 
+      value: '24,847', 
+      change: '+12.5%', 
+      icon: 'Package', 
+      trend: 'up',
+      color: 'bg-blue-500'
     },
     { 
-      id: '#ORD-2846', 
-      client: 'ИП Петров А.В.', 
-      status: 'shipped', 
-      amount: '₽ 125,400',
-      items: 5,
-      weight: '450 кг',
-      delivery: '23.10.2025',
-      address: 'г. Санкт-Петербург, пр. Невский 120',
-      contact: '+7 (812) 987-65-43'
+      title: 'Активные заказы', 
+      value: '1,234', 
+      change: '+8.2%', 
+      icon: 'ShoppingCart', 
+      trend: 'up',
+      color: 'bg-green-500'
     },
     { 
-      id: '#ORD-2845', 
-      client: 'ЗАО "МегаСтрой"', 
-      status: 'delivered', 
-      amount: '₽ 1,245,000',
-      items: 28,
-      weight: '5600 кг',
-      delivery: '22.10.2025',
-      address: 'г. Екатеринбург, ул. Ленина 78',
-      contact: '+7 (343) 555-22-11'
+      title: 'Транспорт в пути', 
+      value: '47', 
+      change: '-2.1%', 
+      icon: 'Truck', 
+      trend: 'down',
+      color: 'bg-orange-500'
+    },
+    { 
+      title: 'IoT Устройства', 
+      value: '328', 
+      change: '+5.0%', 
+      icon: 'Cpu', 
+      trend: 'up',
+      color: 'bg-purple-500'
     },
   ];
 
-  const iotSensors = [
-    { name: 'Температура', value: '+18°C', status: 'normal', icon: 'Thermometer' },
-    { name: 'Влажность', value: '45%', status: 'normal', icon: 'Droplets' },
-    { name: 'Освещение', value: 'Вкл', status: 'active', icon: 'Lightbulb' },
-    { name: 'Безопасность', value: 'OK', status: 'normal', icon: 'Shield' },
+  const aiPredictions = [
+    { category: 'Электроника', current: 450, predicted: 620, trend: 'up' },
+    { category: 'Продукты питания', current: 1200, predicted: 980, trend: 'down' },
+    { category: 'Химия', current: 340, predicted: 450, trend: 'up' },
+    { category: 'Текстиль', current: 580, predicted: 610, trend: 'up' },
   ];
 
-  const inventoryChartData = [
-    { month: 'Янв', actual: 72000, forecast: 71500, aiPrediction: 73200 },
-    { month: 'Фев', actual: 75000, forecast: 74500, aiPrediction: 75800 },
-    { month: 'Мар', actual: 78500, forecast: 77000, aiPrediction: 79200 },
-    { month: 'Апр', actual: 76000, forecast: 79000, aiPrediction: 77500 },
-    { month: 'Май', actual: 80000, forecast: 80500, aiPrediction: 81200 },
-    { month: 'Июн', actual: 82500, forecast: 82000, aiPrediction: 83800 },
-    { month: 'Июл', actual: null, forecast: 84000, aiPrediction: 85500 },
-    { month: 'Авг', actual: null, forecast: 86500, aiPrediction: 87200 },
+  const stockMovement = [
+    { month: 'Янв', приход: 4000, расход: 2400, остаток: 2400 },
+    { month: 'Фев', приход: 3000, расход: 1398, остаток: 3002 },
+    { month: 'Мар', приход: 2000, расход: 3800, остаток: 1202 },
+    { month: 'Апр', приход: 2780, расход: 3908, остаток: 74 },
+    { month: 'Май', приход: 1890, расход: 4800, остаток: -2836 },
+    { month: 'Июн', приход: 2390, расход: 3800, остаток: -4246 },
   ];
 
-  const salesChartData = [
-    { week: 'Нед 1', sales: 1200, target: 1100 },
-    { week: 'Нед 2', sales: 1350, target: 1200 },
-    { week: 'Нед 3', sales: 1150, target: 1300 },
-    { week: 'Нед 4', sales: 1453, target: 1400 },
+  const blockchainTransactions = [
+    { id: '0x7f8a...3d2c', type: 'Поставка', status: 'verified', time: '2 мин назад' },
+    { id: '0x9b2e...5a1f', type: 'Отгрузка', status: 'verified', time: '5 мин назад' },
+    { id: '0x4c3d...8e9b', type: 'Возврат', status: 'pending', time: '12 мин назад' },
+    { id: '0x1a5f...6c7d', type: 'Инвентаризация', status: 'verified', time: '18 мин назад' },
   ];
 
-  const vehicleLocations = [
-    { id: 'TRK-001', name: 'КАМАЗ 6520', location: 'Москва → Казань', progress: 65, eta: '2 часа', lat: 55.7558, lng: 37.6173 },
-    { id: 'TRK-002', name: 'МАЗ 5440', location: 'СПб → Новгород', progress: 40, eta: '4 часа', lat: 59.9343, lng: 30.3351 },
-    { id: 'TRK-003', name: 'Volvo FH', location: 'Екб → Челябинск', progress: 85, eta: '45 минут', lat: 56.8389, lng: 60.6057 },
+  const iotDevices = [
+    { name: 'Датчик температуры - Зона А', value: '+4°C', status: 'ok', battery: 87 },
+    { name: 'Датчик влажности - Зона Б', value: '45%', status: 'ok', battery: 62 },
+    { name: 'Весы - Участок 3', value: '1.2 т', status: 'warning', battery: 23 },
+    { name: 'RFID Scanner - Ворота 1', value: 'Активен', status: 'ok', battery: 95 },
+  ];
+
+  const fleetStatus = [
+    { vehicle: 'ГАЗель А123МР', location: 'Москва → Казань', progress: 67, eta: '2ч 15м' },
+    { vehicle: 'КАМАЗ В456СТ', location: 'Склад А → Склад Б', progress: 34, eta: '4ч 30м' },
+    { vehicle: 'Мерседес С789УФ', location: 'Санкт-Петербург → Москва', progress: 89, eta: '45м' },
   ];
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <aside className="w-64 border-r border-border bg-sidebar">
-        <div className="p-6 border-b border-sidebar-border">
+    <div className="min-h-screen bg-background">
+      <aside className="fixed left-0 top-0 h-full w-64 bg-card border-r border-border flex flex-col shadow-lg z-10">
+        <div className="p-6 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Icon name="Blocks" className="text-primary-foreground" size={24} />
+            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+              <Icon name="Boxes" className="text-primary-foreground" size={24} />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-sidebar-foreground">СнабИИ</h1>
-              <p className="text-xs text-sidebar-foreground/60">Управление складом</p>
+              <h1 className="text-xl font-bold text-foreground">СнабИИ</h1>
+              <p className="text-xs text-muted-foreground">AI Logistics Platform</p>
             </div>
           </div>
         </div>
 
-        <nav className="p-4 space-y-1">
-          {menuItems.map((item) => (
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          {modules.map((module) => (
             <button
-              key={item.id}
-              onClick={() => setActiveSection(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                activeSection === item.id
-                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+              key={module.id}
+              onClick={() => setActiveModule(module.id)}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                activeModule === module.id
+                  ? 'bg-primary text-primary-foreground shadow-md'
+                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
               }`}
             >
-              <Icon name={item.icon} size={20} />
-              <span className="text-sm">{item.label}</span>
+              <Icon name={module.icon} size={20} />
+              <span className="font-medium">{module.label}</span>
             </button>
           ))}
         </nav>
 
-        <div className="absolute bottom-6 left-4 right-4">
-          <Card className="bg-sidebar-accent border-sidebar-border">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-sidebar-foreground">Темная тема</span>
-                <Switch checked={isDark} onCheckedChange={toggleTheme} />
-              </div>
-              <p className="text-xs text-sidebar-foreground/60">
-                Переключение между светлой и темной темой
-              </p>
-            </CardContent>
-          </Card>
+        <div className="p-4 border-t border-border">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm text-muted-foreground">Тёмная тема</span>
+            <Switch checked={isDark} onCheckedChange={toggleTheme} />
+          </div>
+          <div className="flex items-center gap-3">
+            <Avatar>
+              <AvatarFallback className="bg-primary text-primary-foreground">ИВ</AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Иван Волков</p>
+              <p className="text-xs text-muted-foreground">Менеджер склада</p>
+            </div>
+            <Icon name="LogOut" className="text-muted-foreground cursor-pointer hover:text-foreground" size={18} />
+          </div>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto">
-        <header className="border-b border-border bg-card sticky top-0 z-10">
-          <div className="px-8 py-4 flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">
-                {menuItems.find((item) => item.id === activeSection)?.label || 'Дашборд'}
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Добро пожаловать в систему управления складом и логистикой
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm">
-                <Icon name="Bell" size={16} className="mr-2" />
-                Уведомления
-              </Button>
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium">
-                АП
+      <main className="ml-64 min-h-screen">
+        <header className="bg-card border-b border-border sticky top-0 z-10 shadow-sm">
+          <div className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">
+                  {modules.find(m => m.id === activeModule)?.label}
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Управление логистическими операциями в реальном времени
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button variant="outline" size="sm">
+                  <Icon name="Download" size={16} className="mr-2" />
+                  Экспорт
+                </Button>
+                <Button size="sm">
+                  <Icon name="Plus" size={16} className="mr-2" />
+                  Создать заказ
+                </Button>
               </div>
             </div>
           </div>
         </header>
 
-        <div className="p-8 space-y-8">
-          {activeSection === 'warehouse' ? (
-            <WarehouseSection />
-          ) : (
-          <div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {metrics.map((metric, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    {metric.title}
-                  </CardTitle>
-                  <Icon name={metric.icon} className={metric.color} size={20} />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-foreground">{metric.value}</div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    <span className={metric.trend.startsWith('+') ? 'text-green-600' : 'text-red-600'}>
-                      {metric.trend}
-                    </span>{' '}
-                    за последнюю неделю
-                  </p>
+        <div className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {kpiMetrics.map((metric, idx) => (
+              <Card key={idx} className="relative overflow-hidden hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">{metric.title}</p>
+                      <p className="text-3xl font-bold text-foreground">{metric.value}</p>
+                      <div className="flex items-center gap-1">
+                        <Icon 
+                          name={metric.trend === 'up' ? 'TrendingUp' : 'TrendingDown'} 
+                          size={14} 
+                          className={metric.trend === 'up' ? 'text-green-500' : 'text-red-500'} 
+                        />
+                        <span className={`text-xs font-medium ${metric.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
+                          {metric.change}
+                        </span>
+                      </div>
+                    </div>
+                    <div className={`w-12 h-12 ${metric.color} rounded-lg flex items-center justify-center`}>
+                      <Icon name={metric.icon} className="text-white" size={24} />
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -212,30 +208,26 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Icon name="LineChart" size={20} className="text-primary" />
-                  Прогноз запасов ИИ
+                  <Icon name="Activity" className="text-primary" size={20} />
+                  Движение товаров
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={inventoryChartData}>
-                    <defs>
-                      <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
-                      </linearGradient>
-                      <linearGradient id="colorForecast" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
+                  <AreaChart data={stockMovement}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                     <XAxis dataKey="month" className="text-xs" />
                     <YAxis className="text-xs" />
-                    <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }} 
+                    />
                     <Legend />
-                    <Area type="monotone" dataKey="actual" stroke="#2563eb" fillOpacity={1} fill="url(#colorActual)" name="Факт" />
-                    <Area type="monotone" dataKey="aiPrediction" stroke="#10b981" fillOpacity={1} fill="url(#colorForecast)" strokeDasharray="5 5" name="ИИ Прогноз" />
+                    <Area type="monotone" dataKey="приход" stackId="1" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} />
+                    <Area type="monotone" dataKey="расход" stackId="2" stroke="#ef4444" fill="#ef4444" fillOpacity={0.6} />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -244,118 +236,56 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Icon name="TrendingUp" size={20} className="text-primary" />
-                  Динамика продаж
+                  <Icon name="Brain" className="text-primary" size={20} />
+                  ИИ Прогноз потребности
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={salesChartData}>
+                  <BarChart data={aiPredictions}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                    <XAxis dataKey="week" className="text-xs" />
+                    <XAxis dataKey="category" className="text-xs" />
                     <YAxis className="text-xs" />
-                    <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }} 
+                    />
                     <Legend />
-                    <Line type="monotone" dataKey="sales" stroke="#2563eb" strokeWidth={3} name="Продажи" dot={{ r: 6 }} />
-                    <Line type="monotone" dataKey="target" stroke="#94a3b8" strokeWidth={2} strokeDasharray="5 5" name="План" />
-                  </LineChart>
+                    <Bar dataKey="current" fill="#94a3b8" name="Текущий" />
+                    <Bar dataKey="predicted" fill="#3b82f6" name="Прогноз" />
+                  </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="Warehouse" size={20} className="text-primary" />
-                  Заполненность складов
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {warehouseData.map((warehouse, index) => (
-                  <div key={index}>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">{warehouse.name}</span>
-                      <span className="text-sm text-muted-foreground">{warehouse.fill}%</span>
-                    </div>
-                    <Progress value={warehouse.fill} className="h-2" />
-                    <p className="text-xs text-muted-foreground mt-1">Вместимость: {warehouse.capacity}</p>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="Radio" size={20} className="text-primary" />
-                  IoT мониторинг
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid grid-cols-2 gap-4">
-                {iotSensors.map((sensor, index) => (
-                  <div
-                    key={index}
-                    className="p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-200"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Icon name={sensor.icon} size={16} className="text-primary" />
-                      <span className="text-xs text-muted-foreground">{sensor.name}</span>
-                    </div>
-                    <div className="text-lg font-bold text-foreground">{sensor.value}</div>
-                    <Badge variant="outline" className="mt-2 text-xs">
-                      {sensor.status === 'normal' ? '✓ Норма' : '● Активно'}
-                    </Badge>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2">
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Icon name="ShoppingCart" size={20} className="text-primary" />
-                  Последние заказы
+                  <Icon name="Shield" className="text-primary" size={20} />
+                  Блокчейн транзакции
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {recentOrders.map((order, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-200 cursor-pointer"
-                      onClick={() => setSelectedOrder(order)}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <Icon name="FileText" className="text-primary" size={20} />
-                        </div>
+                <div className="space-y-3">
+                  {blockchainTransactions.map((tx, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-2 h-2 rounded-full ${tx.status === 'verified' ? 'bg-green-500' : 'bg-yellow-500'}`} />
                         <div>
-                          <p className="font-medium text-foreground">{order.id}</p>
-                          <p className="text-sm text-muted-foreground">{order.client}</p>
+                          <p className="text-sm font-medium text-foreground">{tx.type}</p>
+                          <p className="text-xs text-muted-foreground font-mono">{tx.id}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-foreground">{order.amount}</p>
-                        <Badge
-                          variant={
-                            order.status === 'delivered'
-                              ? 'default'
-                              : order.status === 'shipped'
-                              ? 'secondary'
-                              : 'outline'
-                          }
-                          className="mt-1"
-                        >
-                          {order.status === 'processing'
-                            ? 'В обработке'
-                            : order.status === 'shipped'
-                            ? 'Отправлен'
-                            : 'Доставлен'}
+                        <Badge variant={tx.status === 'verified' ? 'default' : 'secondary'} className="text-xs">
+                          {tx.status === 'verified' ? 'Подтверждено' : 'Ожидание'}
                         </Badge>
+                        <p className="text-xs text-muted-foreground mt-1">{tx.time}</p>
                       </div>
                     </div>
                   ))}
@@ -366,39 +296,57 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Icon name="Blocks" size={20} className="text-primary" />
-                  Блокчейн
+                  <Icon name="Radio" className="text-primary" size={20} />
+                  IoT Устройства
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Icon name="CheckCircle2" className="text-green-600" size={16} />
-                    <span className="text-xs text-muted-foreground">Последняя транзакция</span>
-                  </div>
-                  <p className="text-xs font-mono text-foreground break-all">
-                    0x7a8f...3c2b
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2">2 минуты назад</p>
+              <CardContent>
+                <div className="space-y-3">
+                  {iotDevices.map((device, idx) => (
+                    <div key={idx} className="p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-foreground">{device.name}</p>
+                          <p className="text-lg font-bold text-primary mt-1">{device.value}</p>
+                        </div>
+                        <Badge variant={device.status === 'ok' ? 'default' : 'destructive'} className="text-xs">
+                          {device.status === 'ok' ? 'OK' : '⚠️'}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Icon name="Battery" size={14} className="text-muted-foreground" />
+                        <Progress value={device.battery} className="h-1.5 flex-1" />
+                        <span className="text-xs text-muted-foreground">{device.battery}%</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Всего блоков</span>
-                    <span className="font-medium text-foreground">24,847</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Смарт-контракты</span>
-                    <span className="font-medium text-foreground">143</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Валидаторы</span>
-                    <span className="font-medium text-foreground">8</span>
-                  </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="Truck" className="text-primary" size={20} />
+                  Транспорт
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {fleetStatus.map((vehicle, idx) => (
+                    <div key={idx} className="p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-bold text-foreground">{vehicle.vehicle}</p>
+                        <span className="text-xs text-muted-foreground">ETA: {vehicle.eta}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-2">{vehicle.location}</p>
+                      <div className="flex items-center gap-2">
+                        <Progress value={vehicle.progress} className="h-2 flex-1" />
+                        <span className="text-xs font-medium text-foreground">{vehicle.progress}%</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <Button className="w-full mt-4" variant="outline">
-                  <Icon name="ExternalLink" size={16} className="mr-2" />
-                  Открыть обозреватель
-                </Button>
               </CardContent>
             </Card>
           </div>
@@ -406,130 +354,32 @@ const Index = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Icon name="MapPin" size={20} className="text-primary" />
-                Транспорт в реальном времени
+                <Icon name="Sparkles" className="text-primary" size={20} />
+                Рекомендации ИИ
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {vehicleLocations.map((vehicle, index) => (
-                  <div key={index} className="p-4 rounded-lg bg-muted/50 border border-border">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <Icon name="Truck" className="text-primary" size={20} />
-                        </div>
-                        <div>
-                          <p className="font-medium text-foreground">{vehicle.name}</p>
-                          <p className="text-sm text-muted-foreground">{vehicle.id}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <Badge variant="outline" className="mb-1">
-                          <Icon name="Clock" size={12} className="mr-1" />
-                          {vehicle.eta}
-                        </Badge>
-                        <p className="text-xs text-muted-foreground">{vehicle.location}</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Прогресс маршрута</span>
-                        <span className="font-medium text-foreground">{vehicle.progress}%</span>
-                      </div>
-                      <Progress value={vehicle.progress} className="h-2" />
-                    </div>
-                  </div>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                  <Icon name="AlertTriangle" className="text-blue-500 mb-2" size={24} />
+                  <h4 className="font-semibold text-foreground mb-1">Низкий запас</h4>
+                  <p className="text-sm text-muted-foreground">Категория "Электроника" достигнет минимума через 4 дня. Рекомендуется пополнение.</p>
+                </div>
+                <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
+                  <Icon name="TrendingUp" className="text-green-500 mb-2" size={24} />
+                  <h4 className="font-semibold text-foreground mb-1">Оптимизация маршрута</h4>
+                  <p className="text-sm text-muted-foreground">Объединение заказов #2847 и #2851 сократит расходы на доставку на 18%.</p>
+                </div>
+                <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                  <Icon name="Zap" className="text-purple-500 mb-2" size={24} />
+                  <h4 className="font-semibold text-foreground mb-1">Пиковая загрузка</h4>
+                  <p className="text-sm text-muted-foreground">Прогнозируется повышенный спрос в следующую среду. Подготовьте дополнительный персонал.</p>
+                </div>
               </div>
             </CardContent>
           </Card>
-          </div>
-          )}
         </div>
       </main>
-
-      <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Icon name="FileText" className="text-primary" size={24} />
-              Заказ {selectedOrder?.id}
-            </DialogTitle>
-          </DialogHeader>
-          {selectedOrder && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Клиент</p>
-                  <p className="font-medium text-foreground">{selectedOrder.client}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Статус</p>
-                  <Badge
-                    variant={
-                      selectedOrder.status === 'delivered'
-                        ? 'default'
-                        : selectedOrder.status === 'shipped'
-                        ? 'secondary'
-                        : 'outline'
-                    }
-                  >
-                    {selectedOrder.status === 'processing'
-                      ? 'В обработке'
-                      : selectedOrder.status === 'shipped'
-                      ? 'Отправлен'
-                      : 'Доставлен'}
-                  </Badge>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Сумма заказа</p>
-                  <p className="text-xl font-bold text-primary">{selectedOrder.amount}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Количество позиций</p>
-                  <p className="font-medium text-foreground">{selectedOrder.items} шт</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Общий вес</p>
-                  <p className="font-medium text-foreground">{selectedOrder.weight}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Дата доставки</p>
-                  <p className="font-medium text-foreground">{selectedOrder.delivery}</p>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Адрес доставки</p>
-                <div className="p-3 rounded-lg bg-muted/50 flex items-center gap-2">
-                  <Icon name="MapPin" className="text-primary" size={16} />
-                  <p className="text-sm font-medium text-foreground">{selectedOrder.address}</p>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Контактный телефон</p>
-                <div className="p-3 rounded-lg bg-muted/50 flex items-center gap-2">
-                  <Icon name="Phone" className="text-primary" size={16} />
-                  <p className="text-sm font-medium text-foreground">{selectedOrder.contact}</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <Button className="flex-1">
-                  <Icon name="Truck" size={16} className="mr-2" />
-                  Отследить доставку
-                </Button>
-                <Button variant="outline" className="flex-1">
-                  <Icon name="FileText" size={16} className="mr-2" />
-                  Скачать документы
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
