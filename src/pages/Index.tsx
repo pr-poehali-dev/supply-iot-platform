@@ -99,6 +99,18 @@ const Index = () => {
     { vehicle: 'Мерседес С789УФ', location: 'Санкт-Петербург → Москва', progress: 89, eta: '45м' },
   ];
 
+  const warehouseZones = [
+    { zone: 'Зона А', fill: 87, capacity: '2400 м³', items: 12847, status: 'critical' },
+    { zone: 'Зона Б', fill: 62, capacity: '1800 м³', items: 8234, status: 'good' },
+    { zone: 'Зона В', fill: 45, capacity: '3200 м³', items: 6766, status: 'good' },
+  ];
+
+  const recentOrders = [
+    { id: '#ORD-2847', client: 'ООО "Техносервис"', items: 24, sum: '₽487,250', status: 'processing' },
+    { id: '#ORD-2848', client: 'ИП Иванов', items: 12, sum: '₽125,000', status: 'shipped' },
+    { id: '#ORD-2849', client: 'ПАО "МегаСтрой"', items: 156, sum: '₽2,340,000', status: 'pending' },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <aside className="fixed left-0 top-0 h-full w-64 bg-card border-r border-border flex flex-col shadow-lg z-10">
@@ -343,6 +355,67 @@ const Index = () => {
                       <div className="flex items-center gap-2">
                         <Progress value={vehicle.progress} className="h-2 flex-1" />
                         <span className="text-xs font-medium text-foreground">{vehicle.progress}%</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="Warehouse" className="text-primary" size={20} />
+                  Заполненность складов
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {warehouseZones.map((zone, idx) => (
+                    <div key={idx} className="p-4 rounded-lg border border-border hover:border-primary transition-colors">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <p className="font-bold text-foreground">{zone.zone}</p>
+                          <p className="text-xs text-muted-foreground">{zone.capacity} • {zone.items} товаров</p>
+                        </div>
+                        <Badge variant={zone.status === 'critical' ? 'destructive' : 'default'}>
+                          {zone.fill}%
+                        </Badge>
+                      </div>
+                      <Progress value={zone.fill} className="h-2" />
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="ShoppingCart" className="text-primary" size={20} />
+                  Последние заказы
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {recentOrders.map((order, idx) => (
+                    <div key={idx} className="p-4 rounded-lg border border-border hover:border-primary transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="font-bold text-foreground">{order.id}</p>
+                        <Badge variant={
+                          order.status === 'shipped' ? 'default' : 
+                          order.status === 'processing' ? 'secondary' : 'outline'
+                        }>
+                          {order.status === 'shipped' ? 'Отправлен' : 
+                           order.status === 'processing' ? 'В обработке' : 'Ожидание'}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-1">{order.client}</p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground">{order.items} позиций</span>
+                        <span className="font-bold text-primary">{order.sum}</span>
                       </div>
                     </div>
                   ))}
