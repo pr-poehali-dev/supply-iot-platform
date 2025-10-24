@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import WarehouseSection from '@/components/WarehouseSection';
 
 const Index = () => {
   const [isDark, setIsDark] = useState(false);
@@ -181,6 +182,10 @@ const Index = () => {
         </header>
 
         <div className="p-8 space-y-8">
+          {activeSection === 'warehouse' ? (
+            <WarehouseSection />
+          ) : (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {metrics.map((metric, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
@@ -440,6 +445,8 @@ const Index = () => {
             </CardContent>
           </Card>
         </div>
+          </>
+          )}
       </main>
 
       <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
